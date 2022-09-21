@@ -45,7 +45,7 @@ SAVEPOINT savePointOne;
 
 -- Update all animals' weight to be their weight multiplied by -1
 UPDATE animals SET weight_kg = weight_kg * -1;
-SELECT * FROM animals;
+SELECT * FROM owners;
 
 -- Rolling back to the SAVEPOINT
 ROLLBACK To savePointOne;
@@ -72,3 +72,33 @@ SELECT species, MIN(weight_kg), MAX(weight_kg) FROM animals GROUP BY species;
 
 -- What is the average number of escape attempts per animal type of those born between 1990 and 2000?
 SELECT species, AVG(escape_attempts) FROM animals WHERE date_of_birth BETWEEN '1990 01-01' AND '2000-12-31' GROUP BY species;
+
+-- Dropping a column
+ALTER TABLE animals
+  DROP COLUMN species;
+
+  -- add column species_id
+  ALTER TABLE animals ADD COLUMN species_id INT;
+
+  -- species_id foreign key
+  ALTER TABLE animals ADD CONSTRAINT fk_animals_species FOREIGN KEY( species_id) REFERENCES species(id);
+
+  -- add column owners_id
+  ALTER TABLE animals ADD COLUMN owner_id INT;
+
+  -- owners_id foreign key
+  ALTER TABLE animals ADD CONSTRAINT fk_animals_owners FOREIGN KEY( owner_id) REFERENCES owners(id);
+
+  -- query using join 
+SELECT name FROM animals INNER JOIN owners ON animals.owner_id = owners.id WHERE owners.full_name = 'Melody Pond';
+
+SELECT animals.name FROM animals INNER JOIN species ON animals.species_id= species.id WHERE species.name = 'Pokemon';
+
+SELECT owners.full_name, name FROM owners LEFT JOIN animals ON animals.owner_id = owners.id;
+SELECT species.name, COUNT(animals.name) FROM animals INNER JOIN species ON animals.species_id = species_id GROUP BY species.name;
+
+SELECT animals.name FROM animals JOIN owners ON animals.owner_id = owners.id WHERE owners.full_name = 'Jennifer Orwell'; 
+
+SELECT animals.name FROM animals JOIN owners ON animals.owner_id = owners.id WHERE owners.full_name = 'Dean Winchester' AND animals.escape_attempts = 0; 
+
+SELECT owners.full_name, COUNT(animals.name) FROM owners LEFT JOIN animals ON owners.id = animals.owner_id GROUP BY owners.full_name ORDER BY COUNT(animals.name) DESC;
