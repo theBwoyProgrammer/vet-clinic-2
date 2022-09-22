@@ -28,3 +28,27 @@ CREATE TABLE species (
     name varchar(100) NOT NULL,
     PRIMARY KEY(id)
 );
+
+-- Create a table named vets
+CREATE TABLE vets (
+    id INT NOT NULL GENERATED ALWAYS AS IDENTITY,
+    name varchar(100) NOT NULL,
+    age INT,
+    date_of_graduation date,
+    PRIMARY KEY(id)
+);
+
+-- create specialization join table (JOIN)
+CREATE TABLE specialization (
+    id INT NOT NULL GENERATED ALWAYS AS IDENTITY,
+    species_id INT REFERENCES species(id),
+    vet_id INT REFERENCES vets(id)
+);
+
+-- Create visits join table (JOIN)
+CREATE TABLE visits (
+    id INT NOT NULL GENERATED ALWAYS AS IDENTITY,
+    animals_id INT REFERENCES animals(id),
+    vet_id INT REFERENCES vets(id) 
+    date_of_visit DATE NOT NULL
+);
