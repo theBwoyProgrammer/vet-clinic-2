@@ -49,6 +49,10 @@ CREATE TABLE specialization (
 CREATE TABLE visits (
     id INT NOT NULL GENERATED ALWAYS AS IDENTITY,
     animals_id INT REFERENCES animals(id),
-    vet_id INT REFERENCES vets(id) 
+    vet_id INT REFERENCES vets(id)
     date_of_visit DATE NOT NULL
 );
+
+-- Add an email column to your owners table
+ALTER TABLE owners ADD COLUMN email VARCHAR(120);
+
