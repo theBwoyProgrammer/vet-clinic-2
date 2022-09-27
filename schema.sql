@@ -49,14 +49,15 @@ CREATE TABLE specialization (
 CREATE TABLE visits (
     id INT NOT NULL GENERATED ALWAYS AS IDENTITY,
     animals_id INT REFERENCES animals(id),
-    vet_id INT REFERENCES vets(id)
+    vet_id INT REFERENCES vets(id),
     date_of_visit DATE NOT NULL
 );
 
 -- Add an email column to your owners table
 ALTER TABLE owners ADD COLUMN email VARCHAR(120);
 
-CREATE INDEX animal_index ON visits(animal_id);
+-- 
+CREATE INDEX animal_index ON visits(animals_id);
 CREATE INDEX vet_index ON visits(vet_id);
 CREATE INDEX email_index ON owners(email);
 
